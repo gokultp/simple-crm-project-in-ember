@@ -1,0 +1,90 @@
+{{crm-navbar}}
+
+
+<div class="row">
+    <div class="col s3">
+        {{md-select content=managers
+            value=selectedManager
+            label="Managers"
+            prompt="Please choose..."
+            class="col s12"
+        }}
+    </div>
+    <div class="col s5">
+        <div class="row">
+            <div class="col s12">
+                <label>Generated Revenue</label>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s2">
+                <label>From</label><br>
+
+                <label>{{from}}</label>
+            </div>
+            <div class="col s8">
+
+                <p class="range-field">
+                    {{range-slider start=range
+                           min=500
+                           max=10000
+                           step=500
+                           connect=true
+                           on-change="sliderChanged"
+                    }}
+               </p>
+            </div>
+            <div class="col s2">
+                <label>To</label><br>
+                <label>{{to}}</label>
+            </div>
+        </div>
+    </div>
+    <div class="col s3">
+        {{md-select content=sortList
+            value=sortOrder
+            label="Sort Order"
+            class="col s12"
+        }}
+    </div>
+</div>
+<div class="row">
+    {{#if showGrid}}
+        <div class="row" >
+            <div class="col s5">
+                {{crm-customers data=(grid data (getPage page 1) 5) manager= selectedManager}}
+
+            </div>
+
+            <div class="col s5">
+                {{crm-customers data=(grid data (getPage page 2) 5) manager= selectedManager}}
+
+            </div>
+
+        </div>
+    {{else}}
+        <div class="row">
+            {{crm-table data=(grid data page 10) managers= managers}}
+        </div>
+    {{/if}}
+
+
+
+
+    <div class="fixed-action-btn horizontal click-to-toggle" style="top: 90px; right: 24px;">
+        <a class="btn-floating btn-large red waves-effect waves-light" {{action "editTodo" on="click"}}>
+            <i class="material-icons">
+                {{#if showGrid}}
+                    menu
+                {{else}}
+                    view_module
+                {{/if}}
+            </i>
+        </a>
+
+    </div>
+
+    {{md-pagination min=1 max=maxPage current=page range=10 class="right"}}
+
+</div>
